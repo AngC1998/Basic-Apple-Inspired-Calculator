@@ -2,4 +2,4 @@
 
 "Weblink: https://medium.com/@ethanryan/lets-make-a-javascript-calculator-a81186cb912f" 
 
-Status: JavaScript file not working with project: additional help or suggestions or advice highly appreciated! 
+Status: Calculator finally somewhat functional since JavaScript isn't functionally properly on PC, so removed JavaScript file and put the functional script into HTML file. Still working on the functionality/back-end of calculator, but front-end should be fine for now.  
