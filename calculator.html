@@ -2,7 +2,7 @@
 <head>
     <link rel = "stylesheet" href = "calculator.css">
     <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
-    <script src = "calculator.js"></script> 
+    <!--<script src = "calculator.js"></script>-->
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!-- Latest compiled JavaScript -->
@@ -11,30 +11,115 @@
 
 <body>
     <div class = "container">
-    <div class = "item item-header">0</div>
+        <div class = "item item-header" id = "currentValue">0</div>
     
-    <button class = "btn silver">AC</button>
-    <button class = "btn silver">+/-</button>
-    <button class = "btn silver">%</button>
-    <button class = "btn orange">/</button>
+        <button class = "btn silver">AC</button>
+        <button class = "btn silver">+/-</button>
+        <button class = "btn silver">%</button>
+        <button class = "btn orange">/</button>
     
-    <button class = "btn">7</button>
-    <button class = "btn">8</button>
-    <button class = "btn">9</button>
-    <button class = "btn orange">X</button>
+        <button class = "btn num">7</button>
+        <button class = "btn num">8</button>
+        <button class = "btn num">9</button>
+        <button class = "btn orange multiply">X</button>
     
-    <button class = "btn">4</button>
-    <button class = "btn">5</button>
-    <button class = "btn">6</button>
-    <button class = "btn orange">-</button>
+        <button class = "btn num">4</button>
+        <button class = "btn num">5</button>
+        <button class = "btn num">6</button>
+        <button class = "btn orange subtract">-</button>
     
-    <button class = "btn">1</button>
-    <button class = "btn">2</button>
-    <button class = "btn">3</button>
-    <button class = "btn orange">+</button>
+        <button class = "btn num">1</button>
+        <button class = "btn num">2</button>
+        <button class = "btn num">3</button>
+        <button class = "btn orange add">+</button>
     
-    <button class = "btn num zero">0</button>
-    <button class = "btn">.</button>
-    <button class = "btn orange">=</button>
+        <button class = "btn num zero">0</button>
+        <button class = "btn">.</button>
+        <button class = "btn orange equals">=</button>
+        
+        <script>
+            var globalAnswer = "0";
+            function storeAnswer(value) {
+            var value = value; 
+            globalAnswer = value; 
+            return value; 
+            }
+            function getCurrentValue() {
+                var currentValue = document.getElementById("currentValue").innerHTML;
+                currentValue = parseInt(currentValue, 10);
+                return currentValue;
+            }
+            function clearCurrentValue(event) {
+                $("#clear").click(function(event){
+                    $("#currentValue").html(0);
+                    getCurrentValue();
+                });
+            }clearCurrentValue(event);
+            function equals(event) {
+                $("#equals").click(function(event){
+                    var answer = globalAnswer;
+                    $("#currentValue").html(answer);
+                    return answer;
+                });
+            }equals(event);
+            function addition(event, num1) {
+                $(".btn").click(function(event){
+                    var thingClicked = this.innerHTML;
+        
+                    if($(this).hasClass("num")){
+                        var nextNum = parseInt(thingClicked);
+                        $("#currentValue").html(nextNum);
+                        var result = num1 + nextNum;
+                        storeAnswer(result);
+                        return result;
+                    }
+        
+                    else {
+                        return thingClicked; 
+                    }
+                });
+            }
+            function subtraction(event, num1) {
+                $(".btn").click(function(event){
+                    var thingClicked = this.innerHTML; 
+        
+                    if($(this).hasClass("num")){
+                        var nextNum = parseInt(thingClicked);
+                        $("#currentValue").html(nextNum);
+                        var result = num1 - nextNum; 
+                        storeAnswer(result);
+                        return result; 
+                    }
+        
+                    else {
+                        return thingClicked; 
+                    }
+                })
+            }
+            function clickButton(event) {
+                var thingClicked = "0";
+                $(".btn").click(function(event){
+                    thingClicked = this.innerHTML;
+        
+                    if($(this).hasClass("add")) {
+                        var num = getCurrentValue();
+                        addition(event, num); 
+                    }
+                    if($(this).hasClass("subtract")) {
+                        var num = getCurrentValue(); 
+                        subtraction(event, num);
+                    }
+                    if($(this).hasClass("num")) {
+                        var currentValue = getCurrentValue();
+                        currentValue = currentValue.toString();
+                        var newString = currentValue + thingClicked;
+                        var newNumber = parseInt(newString, 10);
+                        $("#currentValue").html(newNumber);
+                    }
+        
+                })
+                return thingClicked;
+            }clickButton(event);
+        </script> 
     </div>
 </body>
