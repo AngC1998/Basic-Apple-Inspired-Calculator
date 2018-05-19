@@ -13,10 +13,10 @@
     <div class = "container">
         <div class = "item item-header" id = "currentValue">0</div>
     
-        <button class = "btn silver">AC</button>
+        <button class = "btn silver clear">AC</button>
         <button class = "btn silver">+/-</button>
         <button class = "btn silver">%</button>
-        <button class = "btn orange">/</button>
+        <button class = "btn orange divide">/</button>
     
         <button class = "btn num">7</button>
         <button class = "btn num">8</button>
@@ -35,91 +35,107 @@
     
         <button class = "btn num zero">0</button>
         <button class = "btn">.</button>
-        <button class = "btn orange equals">=</button>
+        <button class = "btn equals">=</button>
         
         <script>
             var globalAnswer = "0";
+            function removeLeadingZero(string) {
+                var newString = string; 
+                if(newString[0] === '0') {
+                    newString = newString.slice(1);
+                }
+                return newString; 
+            }
+            function removeLeadingSymbol(string) {
+                var newString = string;
+                var symbols = ["*", "/", "+", "-", "%"];
+                if(symbols.includes(newString[0])) {
+                    newString = newString.slice(1);
+                }
+                return newString; 
+            }
             function storeAnswer(value) {
-            var value = value; 
-            globalAnswer = value; 
-            return value; 
+                var valued = removeLeadingZero(value); 
+                globalAnswer = valued; 
+                $("#globalAnswer").html(globalAnswer); 
+                return value; 
             }
             function getCurrentValue() {
                 var currentValue = document.getElementById("currentValue").innerHTML;
-                currentValue = parseInt(currentValue, 10);
                 return currentValue;
             }
-            function clearCurrentValue(event) {
-                $("#clear").click(function(event){
-                    $("#currentValue").html(0);
-                    getCurrentValue();
-                });
-            }clearCurrentValue(event);
-            function equals(event) {
-                $("#equals").click(function(event){
-                    var answer = globalAnswer;
-                    $("#currentValue").html(answer);
-                    return answer;
-                });
-            }equals(event);
-            function addition(event, num1) {
-                $(".btn").click(function(event){
-                    var thingClicked = this.innerHTML;
-        
-                    if($(this).hasClass("num")){
-                        var nextNum = parseInt(thingClicked);
-                        $("#currentValue").html(nextNum);
-                        var result = num1 + nextNum;
-                        storeAnswer(result);
-                        return result;
-                    }
-        
-                    else {
-                        return thingClicked; 
-                    }
-                });
+            function clearCurrentValue() {
+                $("#currentValue").html("0");
+                return storeAnswer("0");
             }
-            function subtraction(event, num1) {
-                $(".btn").click(function(event){
-                    var thingClicked = this.innerHTML; 
-        
-                    if($(this).hasClass("num")){
-                        var nextNum = parseInt(thingClicked);
-                        $("#currentValue").html(nextNum);
-                        var result = num1 - nextNum; 
-                        storeAnswer(result);
-                        return result; 
-                    }
-        
-                    else {
-                        return thingClicked; 
-                    }
-                })
+            function equals(event) {
+                var answer = globalAnswer; 
+                var removeEqualsSign = answer.split("=");
+                var newAnswer = removeEqualsSign[0];
+                newAnswer = replaceTimes(newAnswer);
+                newAnswer = removeLeadingSymbol(newAnswer);
+                var finalAnswer = eval(newAnswer);
+                finalAnswer = finalAnswer.toString(); 
+                storeAndReset(finalAnswer, finalAnswer);
+                return finalAnswer; 
             }
             function clickButton(event) {
-                var thingClicked = "0";
                 $(".btn").click(function(event){
-                    thingClicked = this.innerHTML;
-        
-                    if($(this).hasClass("add")) {
-                        var num = getCurrentValue();
-                        addition(event, num); 
+                    var thingClicked = this.innerHTML;
+                    
+                    if($(this).hasClass("orange")) {
+                        return addSymbolToAnswer(thingClicked);
                     }
-                    if($(this).hasClass("subtract")) {
-                        var num = getCurrentValue(); 
-                        subtraction(event, num);
+                    if($(this).hasClass("clear")) {
+                        return clearCurrentValue(); 
+                    }
+                    if($(this).hasClass("equals")) {
+                        addSymbolToAnswer(thingClicked);
+                        return equals(); 
                     }
                     if($(this).hasClass("num")) {
-                        var currentValue = getCurrentValue();
-                        currentValue = currentValue.toString();
-                        var newString = currentValue + thingClicked;
-                        var newNumber = parseInt(newString, 10);
-                        $("#currentValue").html(newNumber);
+                        return createNewNumber(thingClicked);
                     }
-        
                 })
-                return thingClicked;
             }clickButton(event);
+            function replaceTimes(string) {
+                string = string.replace("X", "*");
+                return string; 
+            }
+            function addSymbolToAnswer(string) {
+                var symbolString = string;
+                symbolString = replaceTimes(string);
+                var currentValue = getCurrentValue(); 
+                var symbols = ["*", "/", "+", "-", "%"];
+                if(globalAnswer === currentValue) {
+                    var newGlobalAnswer = currentValue + symbolString; 
+                    return storeAndReset(newGlobalAnswer, symbolString);
+                }
+                if(symbols.includes(currentValue)) {
+                    currentValue = currentValue.replace(currentValue, symbolString);
+                    var newGlobalAnswer = globalAnswer.slice(0, -1) + currentValue; 
+                    return storeAndReset(newGlobalAnswer, symbolString);
+                }
+                else {
+                    currentValue = currentValue + symbolString; 
+                    var newGlobalAnswer = globalAnswer + currentValue; 
+                    return storeAndReset(newGlobalAnswer, symbolString);
+                }
+            }
+            function storeAndReset(newGlobalAnswer, newCurrentValue) {
+                storeAnswer(newGlobalAnswer);
+                $("#currentValue").html(newCurrentValue); 
+                return newCurrentValue; 
+            }
+            function createNewNumber(string) {
+                var thingClicked = string; 
+                var currentValue = getCurrentValue(); 
+                var newString = currentValue + thingClicked; 
+                newString = removeLeadingZero(newString);
+                newString = removeLeadingSymbol(newString);
+                $("#currentValue").html(newString);
+                return newString; 
+            }
         </script> 
     </div>
 </body>
