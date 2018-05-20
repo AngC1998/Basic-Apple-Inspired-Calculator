@@ -15,7 +15,7 @@
     
         <button class = "btn silver clear">AC</button>
         <button class = "btn silver">+/-</button>
-        <button class = "btn silver">%</button>
+        <button class = "btn silver percent">%</button>
         <button class = "btn orange divide">/</button>
     
         <button class = "btn num">7</button>
@@ -34,11 +34,12 @@
         <button class = "btn orange add">+</button>
     
         <button class = "btn num zero">0</button>
-        <button class = "btn">.</button>
+        <button class = "btn num">.</button>
         <button class = "btn equals">=</button>
         
         <script>
             var globalAnswer = "0";
+            var isPercent = false; 
             function removeLeadingZero(string) {
                 var newString = string; 
                 if(newString[0] === '0') {
@@ -48,7 +49,7 @@
             }
             function removeLeadingSymbol(string) {
                 var newString = string;
-                var symbols = ["*", "/", "+", "-", "%"];
+                var symbols = ["*", "/", "+", "-"];
                 if(symbols.includes(newString[0])) {
                     newString = newString.slice(1);
                 }
@@ -96,6 +97,10 @@
                     if($(this).hasClass("num")) {
                         return createNewNumber(thingClicked);
                     }
+                    if($(this).hasClass("percent")) {
+                        isPercent = true; 
+                        return percent(thingClicked); 
+                    }
                 })
             }clickButton(event);
             function replaceTimes(string) {
@@ -106,7 +111,7 @@
                 var symbolString = string;
                 symbolString = replaceTimes(string);
                 var currentValue = getCurrentValue(); 
-                var symbols = ["*", "/", "+", "-", "%"];
+                var symbols = ["*", "/", "+", "-"];
                 if(globalAnswer === currentValue) {
                     var newGlobalAnswer = currentValue + symbolString; 
                     return storeAndReset(newGlobalAnswer, symbolString);
@@ -121,6 +126,22 @@
                     var newGlobalAnswer = globalAnswer + currentValue; 
                     return storeAndReset(newGlobalAnswer, symbolString);
                 }
+            }
+            function percent(string) {
+                $(".btn").click(function(event) {
+                    var thingClicked = this.innerHTML; 
+                    
+                    if($(this).hasClass("num") && isPercent === true) {
+                        var nextNum = parseInt(thingClicked);
+                        var result = nextNum / 100.0; 
+                        $("#currentValue").html(result);
+                        storeAnswer(result);
+                        isPercent = false; 
+                        return result; 
+                    }
+                    
+                    return thingClicked; 
+                })
             }
             function storeAndReset(newGlobalAnswer, newCurrentValue) {
                 storeAnswer(newGlobalAnswer);
