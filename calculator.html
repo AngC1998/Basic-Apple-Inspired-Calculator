@@ -41,6 +41,7 @@
             var globalAnswer = "0";
             var isPercent = false; 
             function removeLeadingZero(string) {
+                console.log("removeLeadingZero");
                 var newString = string; 
                 if(newString[0] === '0') {
                     newString = newString.slice(1);
@@ -48,6 +49,7 @@
                 return newString; 
             }
             function removeLeadingSymbol(string) {
+                console.log("removeLeadingSymbol");
                 var newString = string;
                 var symbols = ["*", "/", "+", "-"];
                 if(symbols.includes(newString[0])) {
@@ -56,20 +58,25 @@
                 return newString; 
             }
             function storeAnswer(value) {
+                console.log("storeAnswer");
                 var valued = removeLeadingZero(value); 
                 globalAnswer = valued; 
                 $("#globalAnswer").html(globalAnswer); 
                 return value; 
             }
             function getCurrentValue() {
+                console.log("getCurrentValue");
                 var currentValue = document.getElementById("currentValue").innerHTML;
                 return currentValue;
             }
             function clearCurrentValue() {
+                console.log("clearCurrentValue");
                 $("#currentValue").html("0");
+                changeBackground(); 
                 return storeAnswer("0");
             }
             function equals(event) {
+                console.log("equals");
                 var answer = globalAnswer; 
                 var removeEqualsSign = answer.split("=");
                 var newAnswer = removeEqualsSign[0];
@@ -78,11 +85,13 @@
                 var finalAnswer = eval(newAnswer);
                 finalAnswer = finalAnswer.toString(); 
                 storeAndReset(finalAnswer, finalAnswer);
+                changeBackground(); 
                 return finalAnswer; 
             }
             function clickButton(event) {
                 $(".btn").click(function(event){
                     var thingClicked = this.innerHTML;
+                    console.log("clickButton");
                     
                     if($(this).hasClass("orange")) {
                         return addSymbolToAnswer(thingClicked);
@@ -104,14 +113,19 @@
                 })
             }clickButton(event);
             function replaceTimes(string) {
+                console.log("replaceTimes");
                 string = string.replace("X", "*");
                 return string; 
             }
             function addSymbolToAnswer(string) {
+                console.log("addSymbolToAnswer");
                 var symbolString = string;
                 symbolString = replaceTimes(string);
                 var currentValue = getCurrentValue(); 
                 var symbols = ["*", "/", "+", "-"];
+                console.log("globalAnswer", globalAnswer);
+                console.log("currentValue", currentValue);
+                console.log("symbolString", symbolString);
                 if(globalAnswer === currentValue) {
                     var newGlobalAnswer = currentValue + symbolString; 
                     return storeAndReset(newGlobalAnswer, symbolString);
@@ -129,7 +143,8 @@
             }
             function percent(string) {
                 $(".btn").click(function(event) {
-                    var thingClicked = this.innerHTML; 
+                    var thingClicked = this.innerHTML;
+                    console.log("percent");
                     
                     if($(this).hasClass("num") && isPercent === true) {
                         var nextNum = parseInt(thingClicked);
@@ -144,18 +159,41 @@
                 })
             }
             function storeAndReset(newGlobalAnswer, newCurrentValue) {
+                console.log("storeAndReset");
                 storeAnswer(newGlobalAnswer);
+                console.log("globalAnswer2", globalAnswer);
+                console.log("currentValue2", currentValue);
                 $("#currentValue").html(newCurrentValue); 
                 return newCurrentValue; 
             }
             function createNewNumber(string) {
+                console.log("createNewNumber");
                 var thingClicked = string; 
                 var currentValue = getCurrentValue(); 
-                var newString = currentValue + thingClicked; 
+                var newString = currentValue + thingClicked;
+                console.log("newString", newString)
                 newString = removeLeadingZero(newString);
                 newString = removeLeadingSymbol(newString);
                 $("#currentValue").html(newString);
+                console.log("globalAnswer3", globalAnswer);
+                console.log("currentValue3", currentValue);
+                changeBackground(); 
                 return newString; 
+            }
+            function changeBackground() {
+                var currentValue = document.getElementById("currentValue").innerHTML; 
+                if(currentValue === "1888") {
+                    $(document.body).addClass('background-UT-Tower'); 
+                }
+                if(currentValue != "1888") {
+                    $(document.body).removeClass('background-UT-Tower'); 
+                }
+                if(currentValue === "3.14") {
+                    $(document.body).addClass('background-pi');
+                }
+                if(currentValue != "3.14") {
+                    $(document.body).removeClass('background-pi'); 
+                }
             }
         </script> 
     </div>
