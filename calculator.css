@@ -5,15 +5,15 @@ body {
 .container {
     display: grid;
     justify-content: center; 
-    grid-template-columns: 80px 80px 80px 80px;
+    grid-template-columns: 80px 80px 80px 80px 80px 80px 80px 80px 80px 80px;
     grid-template-rows: 80px 80px;
     grid-template-areas:
-    "header header header header"
-    "main main main main"
-    "main main main main"
-    "main main main main"
-    "main main main main"
-    "main main main main";
+    "header header header header header header header header header header"
+    "main main main main main main main main main main"
+    "main main main main main main main main main main"
+    "main main main main main main main main main main"
+    "main main main main main main main main main main"
+    "main main main main main main main main main main";
 }
 .item-header {
     grid-area: header;
@@ -30,7 +30,7 @@ body {
     height: 100%;
     left: 0%; 
     top: 0%; 
-    background-color: blue; 
+    background-color: black; 
     background-image: url("http://andrewnourse.com/images/gifs2013/UTtower-fireworks.gif"); 
     background-size: cover; 
     overflow: hidden; 
@@ -42,8 +42,20 @@ body {
     height: 100%; 
     left: 0%; 
     top: 0%; 
-    background-color: blue; 
+    background-color: black; 
     background-image: url("http://24.media.tumblr.com/65ae19247538baadbaf5b0ffd1c1574c/tumblr_mjmowozVID1s5nl47o1_500.gif");
+    background-size: cover; 
+    overflow: hidden; 
+}
+.background-birthday {
+    display: block; 
+    position: absolute; 
+    background-repeat: no-repeat; 
+    width: 100%; 
+    left: 0%; 
+    top: 0%; 
+    background-color: black; 
+    background-image: url("https://media.giphy.com/media/3oKIPllDN24q8Awtwc/giphy.gif"); 
     background-size: cover; 
     overflow: hidden; 
 }
@@ -62,6 +74,10 @@ body {
 }
 .orange {
     background-color: orange; 
+}
+.extra {
+    background-color: #27332F; 
+    font-size: 14px; 
 }
 button {
     font-size: 26px; 
