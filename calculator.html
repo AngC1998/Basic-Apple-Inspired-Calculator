@@ -60,7 +60,7 @@
         <button class = "btn num zero">0</button>
         <button class = "btn num">.</button>
         <button class = "btn equals">=</button>
-        <button class = "btn extra">Rad</button>
+        <button class = "btn extra" id = "type" onclick = "changeType()">Rad</button>
         <button class = "btn extra">sinh</button>
         <button class = "btn extra">cosh</button>
         <button class = "btn extra">tanh</button>
@@ -70,6 +70,14 @@
         <script>
             var globalAnswer = "0";
             var isPercent = false; 
+            function changeType() {
+                if(document.getElementById("type").value === "Rad") {
+                    document.getElementById("type").value = "Deg";
+                }
+                else {
+                    document.getElementById("type").value = "Rad"; 
+                }
+            }
             function removeLeadingZero(string) {
                 console.log("removeLeadingZero");
                 var newString = string; 
@@ -226,7 +234,7 @@
                 var thingClicked = getCurrentValue();
                 console.log(thingClicked);
                 var num = parseInt(thingClicked);
-                var result = num / 100.0; 
+                var result = num * 1.0 / 100.0; 
                 $("#currentValue").html(""+result); 
                 changeBackground(); 
                 isPercent = false; 
@@ -235,7 +243,7 @@
             function reciprocal() {
                 var thingClicked = getCurrentValue(); 
                 var num = parseInt(thingClicked);
-                var result = 1 / num; 
+                var result = 1.0 / num; 
                 $("#currentValue").html(""+result);
                 changeBackground(); 
                 return storeAnswer(""+result);
@@ -323,6 +331,12 @@
                 }
                 if(currentValue.substring(0, 4) != "3.14") {
                     $(document.body).removeClass('background-pi'); 
+                }
+                if(currentValue === "1998") {
+                    $(document.body).addClass('background-birthday');
+                }
+                if(currentValue != "1998") {
+                    $(document.body).removeClass('background-birthday'); 
                 }
             }
         </script> 
