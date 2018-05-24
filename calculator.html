@@ -29,8 +29,8 @@
         <button class = "btn num">9</button>
         <button class = "btn orange multiply">X</button>
         <button class = "btn extra">2nd</button>
-        <button class = "btn extra">x^2</button>
-        <button class = "btn extra">x^3</button>
+        <button class = "btn extra square">x^2</button>
+        <button class = "btn extra cube">x^3</button>
         <button class = "btn extra">x^y</button>
         <button class = "btn extra">e^x</button>
         <button class = "btn extra">10^x</button> 
@@ -39,12 +39,12 @@
         <button class = "btn num">5</button>
         <button class = "btn num">6</button>
         <button class = "btn orange subtract">-</button>
-        <button class = "btn extra">1/x</button>
-        <button class = "btn extra">sqrt(x)</button>
-        <button class = "btn extra">cbrt(x)</button>
+        <button class = "btn extra reciprocal">1/x</button>
+        <button class = "btn extra squareRoot">sqrt(x)</button>
+        <button class = "btn extra cubeRoot">cbrt(x)</button>
         <button class = "btn extra">yrt(x)</button>
-        <button class = "btn extra">ln</button>
-        <button class = "btn extra">log10</button> 
+        <button class = "btn extra logE">ln</button>
+        <button class = "btn extra log10">log10</button> 
     
         <button class = "btn num">1</button>
         <button class = "btn num">2</button>
@@ -54,7 +54,7 @@
         <button class = "btn extra">sin</button>
         <button class = "btn extra">cos</button>
         <button class = "btn extra">tan</button>
-        <button class = "btn extra">e</button>
+        <button class = "btn extra natural">e</button>
         <button class = "btn extra">EE</button> 
         
         <button class = "btn num zero">0</button>
@@ -64,8 +64,8 @@
         <button class = "btn extra">sinh</button>
         <button class = "btn extra">cosh</button>
         <button class = "btn extra">tanh</button>
-        <button class = "btn extra">pi</button>
-        <button class = "btn extra">Rand</button> 
+        <button class = "btn extra pi">pi</button>
+        <button class = "btn extra random">Rand</button> 
         
         <script>
             var globalAnswer = "0";
@@ -89,7 +89,10 @@
             }
             function storeAnswer(value) {
                 console.log("storeAnswer");
-                var valued = removeLeadingZero(value); 
+                var valued = value; 
+                if(valued.substring(0, 2) != "0.") {
+                    var valued = removeLeadingZero(value); 
+                }
                 globalAnswer = valued; 
                 $("#globalAnswer").html(globalAnswer); 
                 return value; 
@@ -104,6 +107,24 @@
                 $("#currentValue").html("0");
                 changeBackground(); 
                 return storeAnswer("0");
+            }
+            function setToPi() {
+                console.log("setToPi");
+                $("#currentValue").html("3.141592653589793");
+                changeBackground(); 
+                return storeAnswer("3.141592653589793"); 
+            }
+            function setToE() {
+                console.log("setToE");
+                $("#currentValue").html("2.718281828459045");
+                changeBackground(); 
+                return storeAnswer("2.718281828459045"); 
+            }
+            function generateRandom() {
+                var num = Math.random(); 
+                $("#currentValue").html(""+num);
+                changeBackground(); 
+                return storeAnswer(""+num);
             }
             function equals(event) {
                 console.log("equals");
@@ -138,7 +159,37 @@
                     }
                     if($(this).hasClass("percent")) {
                         isPercent = true; 
-                        return percent(thingClicked); 
+                        return percent(); 
+                    }
+                    if($(this).hasClass("pi")) {
+                        return setToPi(); 
+                    }
+                    if($(this).hasClass("natural")) {
+                        return setToE(); 
+                    }
+                    if($(this).hasClass("random")) {
+                        return generateRandom(); 
+                    }
+                    if($(this).hasClass("reciprocal")) {
+                        return reciprocal(); 
+                    }
+                    if($(this).hasClass("log10")) {
+                        return log10(); 
+                    }
+                    if($(this).hasClass("logE")) {
+                        return logE(); 
+                    }
+                    if($(this).hasClass("squareRoot")) {
+                        return squareRoot(); 
+                    }
+                    if($(this).hasClass("cubeRoot")) {
+                        return cubeRoot(); 
+                    }
+                    if($(this).hasClass("square")) {
+                        return square(); 
+                    }
+                    if($(this).hasClass("cube")) {
+                        return cube(); 
                     }
                 })
             }clickButton(event);
@@ -171,22 +222,71 @@
                     return storeAndReset(newGlobalAnswer, symbolString);
                 }
             }
-            function percent(string) {
-                $(".btn").click(function(event) {
-                    var thingClicked = this.innerHTML;
-                    console.log("percent");
-                    
-                    if($(this).hasClass("num") && isPercent === true) {
-                        var nextNum = parseInt(thingClicked);
-                        var result = nextNum / 100.0; 
-                        $("#currentValue").html(result);
-                        storeAnswer(result);
-                        isPercent = false; 
-                        return result; 
-                    }
-                    
-                    return thingClicked; 
-                })
+            function percent() {
+                var thingClicked = getCurrentValue();
+                console.log(thingClicked);
+                var num = parseInt(thingClicked);
+                var result = num / 100.0; 
+                $("#currentValue").html(""+result); 
+                changeBackground(); 
+                isPercent = false; 
+                return storeAnswer(""+result); 
+            }
+            function reciprocal() {
+                var thingClicked = getCurrentValue(); 
+                var num = parseInt(thingClicked);
+                var result = 1 / num; 
+                $("#currentValue").html(""+result);
+                changeBackground(); 
+                return storeAnswer(""+result);
+            }
+            function log10() {
+                var thingClicked = getCurrentValue();
+                var num = parseInt(thingClicked);
+                var result = Math.log10(num);
+                $("#currentValue").html(""+result);
+                changeBackground(); 
+                return storeAnswer(""+result);
+            }
+            function logE() {
+                var thingClicked = getCurrentValue(); 
+                var num = parseInt(thingClicked);
+                var result = Math.log(num);
+                $("#currentValue").html(""+result);
+                changeBackground(); 
+                return storeAnswer(""+result); 
+            }
+            function squareRoot() {
+                var thingClicked = getCurrentValue(); 
+                var num = parseInt(thingClicked);
+                var result = Math.sqrt(num);
+                $("#currentValue").html(""+result);
+                changeBackground(); 
+                return storeAnswer(""+result);
+            }
+            function cubeRoot() {
+                var thingClicked = getCurrentValue(); 
+                var num = parseInt(thingClicked);
+                var result = Math.cbrt(num);
+                $("#currentValue").html(""+result);
+                changeBackground(); 
+                return storeAnswer(""+result);
+            }
+            function square() {
+                var thingClicked = getCurrentValue(); 
+                var num = parseInt(thingClicked);
+                var result = num * num; 
+                $("#currentValue").html(""+result);
+                changeBackground(); 
+                return storeAnswer(""+result);
+            }
+            function cube() {
+                var thingClicked = getCurrentValue(); 
+                var num = parseInt(thingClicked);
+                var result = num * num * num; 
+                $("#currentValue").html(""+result);
+                changeBackground(); 
+                return storeAnswer(""+result);
             }
             function storeAndReset(newGlobalAnswer, newCurrentValue) {
                 console.log("storeAndReset");
@@ -218,10 +318,10 @@
                 if(currentValue != "1888") {
                     $(document.body).removeClass('background-UT-Tower'); 
                 }
-                if(currentValue === "3.14") {
+                if(currentValue.substring(0, 4) === "3.14") {
                     $(document.body).addClass('background-pi');
                 }
-                if(currentValue != "3.14") {
+                if(currentValue.substring(0, 4) != "3.14") {
                     $(document.body).removeClass('background-pi'); 
                 }
             }
