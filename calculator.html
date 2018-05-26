@@ -19,10 +19,10 @@
         <button class = "btn orange divide">/</button>
         <button class = "btn extra">(</button>
         <button class = "btn extra">)</button>
-        <button class = "btn extra">mc</button>
-        <button class = "btn extra">m+</button>
-        <button class = "btn extra">m-</button>
-        <button class = "btn extra">mr</button> 
+        <button class = "btn extra memory">mc</button>
+        <button class = "btn extra memory">m+</button>
+        <button class = "btn extra memory">m-</button>
+        <button class = "btn extra memory" id = "store">mr</button> 
     
         <button class = "btn num">7</button>
         <button class = "btn num">8</button>
@@ -70,6 +70,7 @@
         <script>
             var globalAnswer = "0";
             var isPercent = false; 
+            var memStore = 0; 
             function changeType() {
                 if(document.getElementById("type").value === "Rad") {
                     document.getElementById("type").value = "Deg";
@@ -202,12 +203,38 @@
                     if($(this).hasClass("expon")) {
                         return exponential(); 
                     }
+                    if($(this).hasClass("memory")) {
+                        return memory(thingClicked); 
+                    }
                 })
             }clickButton(event);
             function replaceTimes(string) {
                 console.log("replaceTimes");
                 string = string.replace("X", "*");
                 return string; 
+            }
+            function memory(string) {
+                var thingClicked = getCurrentValue(); 
+                var num = parseFloat(thingClicked); 
+                if(string === "mc") {
+                    memStore = 0; 
+                    document.getElementById("store").style.background = "#27332F"
+                }
+                if(string === "m+") {
+                    if(memStore === 0) {
+                        document.getElementById("store").style.background = "#C0C0C0"; 
+                    }
+                    memStore = memStore + num; 
+                }
+                if(string === "m-") {
+                    memStore = memStore - num; 
+                }
+                if(string === "mr") {
+                    num = memStore
+                    $("#currentValue").html(""+memStore); 
+                }
+                changeBackground(); 
+                return storeAnswer(""+num); 
             }
             function addSymbolToAnswer(string) {
                 console.log("addSymbolToAnswer");
