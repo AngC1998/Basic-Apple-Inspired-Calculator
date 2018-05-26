@@ -28,12 +28,12 @@
         <button class = "btn num">8</button>
         <button class = "btn num">9</button>
         <button class = "btn orange multiply">X</button>
-        <button class = "btn extra">2nd</button>
+        <button class = "btn extra second" id = "second">2nd</button>
         <button class = "btn extra square">x^2</button>
         <button class = "btn extra cube">x^3</button>
         <button class = "btn extra">x^y</button>
-        <button class = "btn extra eExponential">e^x</button>
-        <button class = "btn extra tenExponential">10^x</button> 
+        <button class = "btn extra eExponential" id = "specExp">e^x</button>
+        <button class = "btn extra tenExponential" id = "comExp">10^x</button> 
     
         <button class = "btn num">4</button>
         <button class = "btn num">5</button>
@@ -43,17 +43,17 @@
         <button class = "btn extra squareRoot">sqrt(x)</button>
         <button class = "btn extra cubeRoot">cbrt(x)</button>
         <button class = "btn extra">yrt(x)</button>
-        <button class = "btn extra log">ln</button>
-        <button class = "btn extra log">log10</button> 
+        <button class = "btn extra log" id = "specLog">ln</button>
+        <button class = "btn extra log" id = "comLog">log10</button> 
     
         <button class = "btn num">1</button>
         <button class = "btn num">2</button>
         <button class = "btn num">3</button>
         <button class = "btn orange add">+</button>
         <button class = "btn extra">x!</button>
-        <button class = "btn extra trig">sin</button>
-        <button class = "btn extra trig">cos</button>
-        <button class = "btn extra trig">tan</button>
+        <button class = "btn extra trig" id = "sin">sin</button>
+        <button class = "btn extra trig" id = "cos">cos</button>
+        <button class = "btn extra trig" id = "tan">tan</button>
         <button class = "btn extra set">e</button>
         <button class = "btn extra expon">EE</button> 
         
@@ -61,22 +61,23 @@
         <button class = "btn num">.</button>
         <button class = "btn equals">=</button>
         <button class = "btn extra" id = "type" onclick = "changeType()">Rad</button>
-        <button class = "btn extra htrig">sinh</button>
-        <button class = "btn extra htrig">cosh</button>
-        <button class = "btn extra htrig">tanh</button>
+        <button class = "btn extra htrig" id = "sinh">sinh</button>
+        <button class = "btn extra htrig" id = "cosh">cosh</button>
+        <button class = "btn extra htrig" id = "tanh">tanh</button>
         <button class = "btn extra set">pi</button>
         <button class = "btn extra set">Rand</button> 
         
         <script>
             var globalAnswer = "0";
             var isPercent = false; 
+            var secondMode = false; 
             var memStore = 0; 
             function changeType() {
-                if(document.getElementById("type").value === "Rad") {
-                    document.getElementById("type").value = "Deg";
+                if(document.getElementById("type").innerHTML === "Rad") {
+                    document.getElementById("type").innerHTML = "Deg";
                 }
                 else {
-                    document.getElementById("type").value = "Rad"; 
+                    document.getElementById("type").innerHTML = "Rad"; 
                 }
             }
             function removeLeadingZero(string) {
@@ -208,6 +209,34 @@
                     }
                 })
             }clickButton(event);
+            document.getElementById("second").onclick = function() {
+                if(!secondMode) {
+                    secondMode = true; 
+                    document.getElementById("sin").innerHTML = "sin-1"; 
+                    document.getElementById("cos").innerHTML = "cos-1";
+                    document.getElementById("tan").innerHTML = "tan-1"; 
+                    document.getElementById("sinh").innerHTML = "sinh-1";
+                    document.getElementById("cosh").innerHTML = "cosh-1";
+                    document.getElementById("tanh").innerHTML = "tanh-1";
+                    document.getElementById("specExp").innerHTML = "y^x";
+                    document.getElementById("comExp").innerHTML = "2^x";
+                    document.getElementById("specLog").innerHTML = "logy";
+                    document.getElementById("comLog").innerHTML = "log2"; 
+                }
+                else {
+                    secondMode = false; 
+                    document.getElementById("sin").innerHTML = "sin"; 
+                    document.getElementById("cos").innerHTML = "cos";
+                    document.getElementById("tan").innerHTML = "tan"; 
+                    document.getElementById("sinh").innerHTML = "sinh";
+                    document.getElementById("cosh").innerHTML = "cosh";
+                    document.getElementById("tanh").innerHTML = "tanh";
+                    document.getElementById("specExp").innerHTML = "e^x";
+                    document.getElementById("comExp").innerHTML = "10^x";
+                    document.getElementById("specLog").innerHTML = "ln";
+                    document.getElementById("comLog").innerHTML = "log10"; 
+                }
+            }
             function replaceTimes(string) {
                 console.log("replaceTimes");
                 string = string.replace("X", "*");
@@ -267,6 +296,9 @@
                 var thingClicked = getCurrentValue(); 
                 var num = parseFloat(thingClicked);
                 var result = 1.0; 
+                if((document.getElementById("type").innerHTML === "Deg") && (secondMode === false)) {
+                    num = num * (180.0 / Math.PI); 
+                }
                 if(string === "sin") {
                     result = Math.sin(num);
                 }
@@ -276,6 +308,15 @@
                 if(string === "tan") {
                     result = Math.tan(num);
                 }
+                if(string === "sin-1") {
+                    result = Math.asin(num);
+                }
+                if(string === "cos-1") {
+                    result = Math.acos(num);
+                }
+                if(string === "tan-1") {
+                    result = Math.atan(num);
+                }
                 $("#currentValue").html(""+result); 
                 changeBackground(); 
                 return storeAnswer(""+result); 
@@ -284,6 +325,9 @@
                 var thingClicked = getCurrentValue(); 
                 var num = parseFloat(thingClicked);
                 var result = 1.0; 
+                if((document.getElementById("type").innerHTML === "Deg") && (secondMode === false)) {
+                    num = num * (180.0 / Math.PI); 
+                }
                 if(string === "sinh") {
                     result = Math.sinh(num);
                 }
@@ -292,6 +336,15 @@
                 }
                 if(string === "tanh") {
                     result = Math.tanh(num);
+                }
+                if(string === "sinh-1") {
+                    result = Math.asinh(num);
+                }
+                if(string === "cosh-1") {
+                    result = Math.acosh(num);
+                }
+                if(string === "tanh-1") {
+                    result = Math.atanh(num);
                 }
                 $("#currentValue").html(""+result);
                 changeBackground(); 
@@ -324,6 +377,9 @@
                 }
                 if(string === "ln") {
                     result = Math.log(num);
+                }
+                if(string === "log2") {
+                    result = Math.log2(num); 
                 }
                 $("#currentValue").html(""+result);
                 changeBackground(); 
@@ -374,14 +430,18 @@
                 var num = parseFloat(thingClicked);
                 var result = 1.0; 
                 var i = 0; 
+                var constant = 10.0; 
+                if(secondMode) {
+                    constant = 2.0
+                }
                 if(num >= 0) {
                     for(i = 0; i < num; i++) {
-                        result = result * 10.0; 
+                        result = result * constant; 
                     }
                 }
                 else {
                     for(i = 0; i < num; i++) {
-                        result = result / 10.0; 
+                        result = result / constant; 
                     }
                 }
                 $("#currentValue").html(""+result);
