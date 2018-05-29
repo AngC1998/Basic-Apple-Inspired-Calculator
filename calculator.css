@@ -59,6 +59,18 @@ body {
     background-size: cover; 
     overflow: hidden; 
 }
+.background-circle {
+    display: block;
+    position: absolute;
+    background-repeat: no-repeat; 
+    width: 100%; 
+    left: 0%; 
+    top: 0%; 
+    background-color: black;
+    background-image: url("https://media.giphy.com/media/10ht9DnPm4wubu/giphy.gif");
+    background-size: cover; 
+    overflow: hidden; 
+}
 .btn {
     background-color: dimgray;
     border: none;
